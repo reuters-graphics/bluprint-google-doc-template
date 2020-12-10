@@ -1,0 +1,8 @@
+@import '~@reuters-graphics/style-theme-eisbaer/scss/main';
+// @import '~ReutersCharter/sass/chartstyles';
+
+#related-links-container .referral-container{
+	svg{
+		display:none !important;
+	}
+}

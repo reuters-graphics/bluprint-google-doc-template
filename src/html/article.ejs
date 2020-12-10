@@ -1,0 +1,104 @@
+<% const text = localeData('text.json') %>
+<article class='container-fluid'>
+
+	<section class="headline mt-0 mb-0 pt-4">
+		<p class="section-title color-red uppercase"><%= text.Kicker %></p>
+		<h2 class="smaller wide"><%= text.Hed %></h2>
+		<p><%= text.Dek %></p>
+	    <aside class="article-metadata">
+	        <div class="byline-container">
+	            <div class="byline">
+	                By<strong>&nbsp;<a href="https://twitter.com/AlbusJitesh" target="blank">Jitesh Chowdhury,</a>&nbsp;</strong><strong><a href="https://twitter.com/SimonScarr" target="blank">Simon Scarr</a>&nbsp;</strong>and<strong>&nbsp;<a href="https://twitter.com/TheJaneWardell" target="blank">Jane Wardell</a>&nbsp;</strong>
+	            </div>
+	        </div>
+	
+	        <div class="dateline-container">
+			    <% if (metadata.publishDate) { %>
+			      <div class="published">
+			        Published <time class='time' datetime="<%- new Date(metadata.publishDate).toISOString()%>">
+			        <%= journalize.apdate(new Date(metadata.publishDate)); %></time>
+			      </div>
+			    <% } else { %>
+			      <div class="published">
+			        Published <time class='time' datetime="<%- new Date().toISOString()%>">
+			        <%= journalize.apdate(new Date()); %></time>
+			      </div>
+			    <% } %>
+			    <% if (
+					metadata.publishDate &&
+					journalize.apdate(new Date(metadata.publishDate)) !== journalize.apdate(new Date())
+			    ) { %>
+			    <div class="updated">
+					Updated <time class='time' datetime="<%- new Date().toISOString()%>"><%- journalize.apdate(new Date())%></time>
+			    </div>
+			    <% } %>			    
+			    
+	        </div>
+	    </aside>
+	</section>  
+
+
+	<% text.blocks.forEach(function(block){ %>
+
+		<% if (block.Type === 'text') { %>
+			<section class="body-text">
+				<%- parseMarkdown(block.Text) %>
+			</section>
+	  <% } %>
+	  
+
+		<% if (block.Type === 'graphic') { %>
+			<section class="graphic borderless wide mt-5 mb-5">
+				<% if (block.Hed) { %>  	  	
+					<h3><%=block.Hed%></h3>  
+				<% } %>
+		
+				<% if (block.Dek) { %>  	  	
+					<p><%= block.Dek %></p>
+				<% } %>
+	
+	
+				<div id="<%= block.ID %>"></div>
+	
+				<% if (block.Source || block.Note) { %>  	  	
+					<aside>
+						<% if (block.Note ) { %>  	  	
+							<%- parseMarkdown(block.Note) %>
+						<% } %>
+						<% if (block.Source ) { %>  	  	
+							<%- parseMarkdown(block.Source) %>
+						<% } %>
+					</aside>	
+				<% } %>
+			</section>
+	  <% } %>
+	  
+	  
+		<% if (block.Type === 'photo') { %>
+			<figure class='photo fluid'>
+				<img src="img/<%=block.ID%>" alt="<%= block.Alt %>">
+				<%if (block.Caption){%>
+					<figcaption><%= block.Caption%></figcaption>
+				<% } %>
+			</figure>
+		<% } %>
+
+
+		<% if (block.Type === 'ai2html') { %>
+			<section class='graphic wide borderless'>
+				<%let ai2html = include(`ai2html/${block.ID}.ejs`)%>
+				<%= ai2html %>
+			</section>	  
+		<% } %>
+	  
+	  
+	<% }); %>
+
+	
+	<section class='end-notes'>
+		<%- parseMarkdown(text.EndNotes) %>
+	</section>
+	
+	
+	
+</article>	

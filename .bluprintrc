@@ -1,0 +1,61 @@
+{
+  "bluprint": "^0.6.3",
+  "name": "Google doc rig template",
+  "category": "",
+  "actions": [{
+    "action": "prompt",
+    "questions": [{
+      "type": "text",
+      "name": "projectName",
+      "message": "What should we call this project?"
+    }],
+    "condition": ["bluprintPart", null]
+  }, {
+    "action": "remove",
+    "paths": ["README.md"],
+    "condition": ["bluprintPart", null]
+  }, {
+    "action": "move",
+    "paths": ["PROJECT_README.md", "README.md"],
+    "condition": ["bluprintPart", null]
+  }, {
+    "action": "render",
+    "engine": "mustache",
+    "files": ["README.md"],
+    "condition": ["bluprintPart", null]
+  }, {
+    "action": "regexreplace",
+    "files": ["package.json"],
+    "replace": [
+      ["projectName", "{{#slugify}}{{ projectName }}{{/slugify}}"]
+    ],
+    "condition": ["bluprintPart", null]
+  }, {
+    "action": "execute",
+    "cmds": [
+      ["yarn"]
+    ]
+  }, {
+    "action": "execute",
+    "cmds": [
+      ["runner", ["check:ai2html"]],
+      ["git", ["init"]],
+      ["git", ["add", "."]],
+      ["git", ["commit", "-m", "initial"]],
+      ["runner", ["check:creds"]],
+      ["runner", ["repo:create"]],
+      ["runner", ["trello:create"]],
+      ["runner", ["start"]]
+    ],
+    "condition": ["bluprintPart", null]
+  }],
+  "parts": {
+    "bin, config & tasks": [
+      "bin/**/*",
+      "config/**/*",
+      ".tasksrc.js",
+      "package.json"
+    ]
+  },
+  "mergeJson": true
+}
