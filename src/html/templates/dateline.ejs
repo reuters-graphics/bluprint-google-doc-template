@@ -17,12 +17,13 @@
       </div>
     <% } %>
     <% if (
-      metadata.publishDate &&
-      journalize.apdate(new Date(metadata.publishDate)) !== journalize.apdate(new Date())
+      metadata.updateDate &&
+      journalize.apdate(new Date(metadata.publishDate)) !== journalize.apdate(new Date(metadata.updateDate))
     ) { %>
     <div class="updated">
       Updated <time class='time' datetime="<%- new Date(metadata.updateDate).toISOString()%>"><%- journalize.apdate(new Date(metadata.updateDate))%></time>
     </div>
-    <% } %>
+    <% } %>			    
+
   </div>
 </aside>
