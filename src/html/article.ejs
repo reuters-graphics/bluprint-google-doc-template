@@ -2,9 +2,15 @@
 <article class='container-fluid'>
 
 	<section class="headline mt-0 mb-0 pt-4">
-		<p class="section-title color-red uppercase"><%= text.Kicker %></p>
+
+		<%if (text.Kicker){%>
+			<p class="section-title color-red uppercase"><%= text.Kicker %></p>
+		<%}%>
 		<h2 class="smaller wide"><%= text.Hed %></h2>
-		<p><%= text.Dek %></p>
+		<%if (text.Dek){%>
+			<p><%= text.Dek %></p>
+		<%}%>
+		
 	    <aside class="article-metadata">
 	        <div class="byline-container">
 	            <div class="byline">
